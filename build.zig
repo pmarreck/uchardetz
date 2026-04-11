@@ -138,15 +138,14 @@ pub fn build(b: *std.Build) void {
     });
 
     // Test step: run the test binary against each test file.
-    // Known-broken tests (from upstream CMakeLists.txt) are skipped.
     const test_step = b.step("test", "Run charset detection tests");
     const test_files: []const []const u8 = &.{
         "test/ar/iso-8859-6.txt",
         "test/ar/utf-8.txt",
         "test/ar/windows-1256.txt",
         "test/bg/windows-1251.txt",
-        // "test/da/iso-8859-1.txt",    // known broken upstream
-        // "test/da/iso-8859-15.txt",   // known broken upstream
+        "test/da/iso-8859-1.txt",
+        "test/da/iso-8859-15.txt",
         "test/da/utf-8.txt",
         "test/da/windows-1252.txt",
         "test/de/iso-8859-1.txt",
@@ -157,7 +156,7 @@ pub fn build(b: *std.Build) void {
         "test/en/ascii.txt",
         "test/eo/iso-8859-3.txt",
         "test/es/iso-8859-1.txt",
-        // "test/es/iso-8859-15.txt",   // known broken upstream
+        "test/es/iso-8859-15.txt",
         "test/es/utf-8.txt",
         "test/es/windows-1252.txt",
         "test/fr/iso-8859-1.txt",
@@ -166,7 +165,7 @@ pub fn build(b: *std.Build) void {
         "test/fr/utf-32.le",
         "test/fr/utf-8.txt",
         "test/fr/windows-1252.txt",
-        // "test/he/iso-8859-8.txt",    // known broken upstream
+        "test/he/iso-8859-8.txt",
         "test/he/utf-8.txt",
         "test/he/windows-1255.txt",
         "test/hu/iso-8859-2.txt",
@@ -174,8 +173,8 @@ pub fn build(b: *std.Build) void {
         "test/ja/euc-jp.txt",
         "test/ja/iso-2022-jp.txt",
         "test/ja/shift_jis.txt",
-        // "test/ja/utf-16be.txt",      // known broken upstream
-        // "test/ja/utf-16le.txt",      // known broken upstream
+        "test/ja/utf-16be.txt",
+        "test/ja/utf-16le.txt",
         "test/ja/utf-8.txt",
         "test/ko/euc-kr.smi",
         "test/ko/iso-2022-kr.txt",

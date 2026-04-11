@@ -94,7 +94,10 @@ static const unsigned char Iso_8859_1_CharToOrderMap[] =
    12, 20,  5,  1,  6,  9, 16, 30, 21, 22, 29,SYM,SYM,SYM,SYM,CTR, /* 7X */
   CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR, /* 8X */
   CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR, /* 9X */
-  SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* AX */
+  /* Byte 0xA4 is the "currency sign" (¤) in ISO-8859-1, essentially
+   * never used in French text. Mark it ILL so the prober yields to
+   * ISO-8859-15 (where 0xA4 = Euro sign €) when this byte appears. */
+  SYM,SYM,SYM,SYM,ILL,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* AX */
   SYM,SYM,SYM,SYM,SYM, 67,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* BX */
    24, 38, 32, 46, 49, 68, 47, 27, 23, 14, 28, 41, 69, 39, 33, 36, /* CX */
    48, 45, 54, 40, 31, 55, 42,SYM, 52, 37, 43, 34, 44, 53, 50, 70, /* DX */

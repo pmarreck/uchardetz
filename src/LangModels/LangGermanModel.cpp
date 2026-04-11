@@ -94,7 +94,10 @@ static const unsigned char Iso_8859_1_CharToOrderMap[] =
    18, 30,  1,  4,  6, 10, 21, 19, 28, 25, 20,SYM,SYM,SYM,SYM,CTR, /* 7X */
   CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR, /* 8X */
   CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR, /* 9X */
-  SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* AX */
+  /* Byte 0xA4 is the "currency sign" (¤) in ISO-8859-1, essentially
+   * never used in German text. Mark it ILL so the prober yields to
+   * ISO-8859-15 (where 0xA4 = Euro sign €) when this byte appears. */
+  SYM,SYM,SYM,SYM,ILL,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* AX */
   SYM,SYM,SYM,SYM,SYM, 65,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* BX */
    41, 31, 37, 44, 22, 49, 50, 35, 32, 29, 48, 43, 57, 33, 47, 52, /* CX */
    53, 39, 51, 34, 40, 55, 26,SYM, 38, 58, 46, 66, 24, 45, 67, 27, /* DX */

@@ -159,6 +159,47 @@ nsresult nsUniversalDetector::HandleData(const char* aBuf, PRUint32 aLen)
         mDone = PR_TRUE;
         return NS_OK;
       }
+
+      /* BOM-less UTF-16 heuristic: if a significant fraction of
+       * every-other-byte positions are NUL, the data is likely UTF-16.
+       * For BMP text (most real-world content), one byte of each
+       * 16-bit code unit is often 0x00.  We check the first
+       * min(aLen, 256) bytes and require:
+       *   - at least 20% NULs in the dominant position (even or odd)
+       *   - fewer than 5% NULs in the other position
+       *   - at least 8 bytes total (4 code units minimum)
+       * This correctly identifies UTF-16LE and UTF-16BE text that
+       * was written without a BOM (e.g. the Japanese test files). */
+      if (aLen >= 8)
+      {
+        PRUint32 checkLen = (aLen < 256) ? aLen : 256;
+        /* Round down to even so we don't bias the count. */
+        checkLen &= ~(PRUint32)1;
+        PRUint32 evenNulls = 0, oddNulls = 0;
+        for (PRUint32 j = 0; j < checkLen; j += 2)
+        {
+          if (aBuf[j]   == '\x00') evenNulls++;
+          if (aBuf[j+1] == '\x00') oddNulls++;
+        }
+        PRUint32 halfLen = checkLen / 2;
+        /* 20% threshold for the dominant null position,
+         * 5% ceiling for the other position. */
+        if (evenNulls * 5 >= halfLen && oddNulls * 20 < halfLen)
+        {
+          /* NULs at even positions → high byte is 0 → big-endian. */
+          mDetectedCharset = "UTF-16BE";
+          mDone = PR_TRUE;
+          return NS_OK;
+        }
+        if (oddNulls * 5 >= halfLen && evenNulls * 20 < halfLen)
+        {
+          /* NULs at odd positions → low byte of each pair is the
+           * significant one → little-endian. */
+          mDetectedCharset = "UTF-16LE";
+          mDone = PR_TRUE;
+          return NS_OK;
+        }
+      }
   }
 
   PRUint32 i;

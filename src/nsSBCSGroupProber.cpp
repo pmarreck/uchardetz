@@ -107,8 +107,14 @@ nsSBCSGroupProber::nsSBCSGroupProber()
   mProbers[30] = new nsSingleByteCharSetProber(&VisciiVietnameseModel);
   mProbers[31] = new nsSingleByteCharSetProber(&Windows_1258VietnameseModel);
 
-  mProbers[32] = new nsSingleByteCharSetProber(&Iso_8859_15DanishModel);
-  mProbers[33] = new nsSingleByteCharSetProber(&Iso_8859_1DanishModel);
+  /* ISO-8859-1 before ISO-8859-15: when no distinguishing bytes are
+   * present (0xA4, 0xA6, 0xA8, 0xB4, 0xB8, 0xBC-0xBE), these two
+   * encodings produce identical scores. Putting 8859-1 first makes it
+   * win ties, which is the safer default (older, more common encoding).
+   * When byte 0xA4 IS present, the 8859-1 prober hits ILL and bails,
+   * letting 8859-15 win correctly. */
+  mProbers[32] = new nsSingleByteCharSetProber(&Iso_8859_1DanishModel);
+  mProbers[33] = new nsSingleByteCharSetProber(&Iso_8859_15DanishModel);
   mProbers[34] = new nsSingleByteCharSetProber(&Windows_1252DanishModel);
 
   Reset();

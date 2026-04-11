@@ -94,7 +94,11 @@ static const unsigned char Iso_8859_1_CharToOrderMap[] =
    17, 29,  1,  6,  3, 16, 14, 25, 27, 20, 26,SYM,SYM,SYM,SYM,CTR, /* 7X */
   CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR, /* 8X */
   CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR,CTR, /* 9X */
-  SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* AX */
+  /* Byte 0xA4 is the "currency sign" (¤) in ISO-8859-1, which is
+   * essentially never used in Danish text. Mark it ILL so that the
+   * prober returns eNotMe when 0xA4 appears, allowing the ISO-8859-15
+   * prober to win (where 0xA4 = Euro sign €, which IS common). */
+  SYM,SYM,SYM,SYM,ILL,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* AX */
   SYM,SYM,SYM,SYM,SYM, 42,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM,SYM, /* BX */
    71, 33, 40, 35, 32, 21, 22, 38, 41, 28, 49, 45, 72, 34, 73, 50, /* CX */
    43, 47, 51, 36, 52, 74, 30,SYM, 19, 75, 37, 44, 31, 46, 76, 48, /* DX */
