@@ -18,8 +18,27 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Build
+      - name: Build (native)
         run: nix build
 
-      - name: Test (zig build test)
+      - name: Test
         run: nix develop -c zig build test
+
+  cross-compile:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - aarch64-macos
+          - aarch64-linux
+          - x86_64-linux
+          - aarch64-windows
+          - x86_64-windows
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Cross-compile for ${{ matrix.target }}
+        run: nix build .#${{ matrix.target }}
