@@ -98,7 +98,7 @@ pub fn build(b: *std.Build) void {
         .link_libcpp = true,
     });
     exe_mod.addCSourceFiles(.{
-        .files = &.{"src/tools/uchardet.cpp"},
+        .files = &.{ "src/tools/uchardet.cpp", "src/tools/i18n.cpp" },
         .flags = cpp_flags,
     });
     exe_mod.addIncludePath(b.path("src"));
@@ -205,5 +205,33 @@ pub fn build(b: *std.Build) void {
         const run = b.addRunArtifact(test_exe);
         run.addFileArg(b.path(test_file));
         test_step.dependOn(&run.step);
+    }
+
+    // i18n smoke tests: verify the CLI help output changes with locale.
+    // We test a representative sample (Latin, CJK, RTL, Cyrillic, Indic)
+    // rather than all 30 languages — enough to confirm the locale
+    // detection and string table lookup work correctly.
+    const i18n_test_cases = [_]struct { locale: []const u8, needle: []const u8 }{
+        .{ .locale = "en_US.UTF-8", .needle = "Options:" },
+        .{ .locale = "fr_FR.UTF-8", .needle = "Options :" },
+        .{ .locale = "ja_JP.UTF-8", .needle = "オプション:" },
+        .{ .locale = "ar_SA.UTF-8", .needle = "الخيارات:" },
+        .{ .locale = "ru_RU.UTF-8", .needle = "Опции:" },
+        .{ .locale = "zh_CN.UTF-8", .needle = "选项:" },
+        .{ .locale = "hi_IN.UTF-8", .needle = "विकल्प:" },
+    };
+    for (i18n_test_cases) |tc| {
+        // Run "uchardet --help" with the given locale and grep for the needle.
+        // If the needle isn't found, grep exits non-zero → test fails.
+        const grep = b.addSystemCommand(&.{
+            "sh", "-c",
+            b.fmt("LANG={s} LC_ALL={s} '{s}' --help | grep -q '{s}'", .{
+                tc.locale, tc.locale,
+                b.getInstallPath(.bin, "uchardet"),
+                tc.needle,
+            }),
+        });
+        grep.step.dependOn(b.getInstallStep());
+        test_step.dependOn(&grep.step);
     }
 }

@@ -1,6 +1,7 @@
 set(
 	UCHARDET_SOURCES
 	uchardet.cpp
+	i18n.cpp
 )
 
 set(UCHARDET_BINARY uchardet)

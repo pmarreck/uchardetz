@@ -1,3 +1,5 @@
+[English](README.md) | [العربية](README.ar.md) | [Azərbaycan](README.az.md) | [বাংলা](README.bn.md) | [Deutsch](README.de.md) | [Ελληνικά](README.el.md) | [Español](README.es.md) | [فارسی](README.fa.md) | [Français](README.fr.md) | [עברית](README.he.md) | [हिन्दी](README.hi.md) | [Magyar](README.hu.md) | [Italiano](README.it.md) | [日本語](README.ja.md) | [ភាសាខ្មែរ](README.km.md) | [한국어](README.ko.md) | [ਪੰਜਾਬੀ](README.pa.md) | [Polski](README.pl.md) | [پښتو](README.ps.md) | [Português (BR)](README.pt_br.md) | [Română](README.ro.md) | [Русский](README.ru.md) | [Kiswahili](README.sw.md) | [தமிழ்](README.ta.md) | [ไทย](README.th.md) | [Türkçe](README.tr.md) | [Українська](README.uk.md) | [اردو](README.ur.md) | [Tiếng Việt](README.vi.md) | [简体中文](README.zh_hans.md)
+
 # uchardetz
 
 A fork of [uchardet](https://github.com/BYVoid/uchardet) (an encoding detector library ported from Mozilla) with **Zig build system** support.
@@ -76,5 +78,15 @@ Upstream skipped 5 tests as "known broken." This fork fixes all of them (60/60 p
 ## Upstream
 
 This is a fork of [BYVoid/uchardet](https://github.com/BYVoid/uchardet). The canonical upstream project has moved to [freedesktop.org](https://www.freedesktop.org/wiki/Software/uchardet/).
+
+## Credits
+
+Fork maintained by [Peter Marreck](https://github.com/pmarreck). Contributions over upstream:
+
+- Fixed all 5 previously-skipped charset detection tests (60/60 passing)
+- Added Zig build system (`build.zig` / `build.zig.zon`) and Nix flake
+- Added BOM-less UTF-16 detection heuristic
+- Localized CLI output to 30 languages with locale-aware string selection
+- Translated README into 30 languages
 
 ---

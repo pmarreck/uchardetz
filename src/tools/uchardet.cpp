@@ -35,6 +35,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 #include "../uchardet.h"
+#include "i18n.h"
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -51,6 +52,7 @@ char buffer[BUFFER_SIZE];
 
 void detect(FILE * fp)
 {
+    const UchardetStrings* s = i18n_get_strings();
     uchardet_t handle = uchardet_new();
 
     while (!feof(fp))
@@ -59,7 +61,7 @@ void detect(FILE * fp)
         int retval = uchardet_handle_data(handle, buffer, len);
         if (retval != 0)
         {
-            fprintf(stderr, "Handle data error.\n");
+            fprintf(stderr, "%s\n", s->handle_data_err);
             exit(1);
         }
     }
@@ -69,36 +71,41 @@ void detect(FILE * fp)
     if (*charset)
     	printf("%s\n", charset);
 	else
-		printf("unknown\n");
-	
+		printf("%s\n", s->unknown);
+
     uchardet_delete(handle);
 }
 
 void show_version()
 {
+    const UchardetStrings* s = i18n_get_strings();
     printf("\n");
-    printf("uchardet Command Line Tool\n");
-    printf("Version %s\n", VERSION);
+    printf("%s\n", s->tool_name);
+    printf(s->version_fmt, VERSION);
+    printf("\n\n");
+    printf(s->authors_fmt, "BYVoid, Jehan");
     printf("\n");
-    printf("Authors: %s\n", "BYVoid, Jehan");
-    printf("Bug Report: %s\n", "https://bugs.freedesktop.org/enter_bug.cgi?product=uchardet");
-    printf("\n");
+    printf(s->bug_report_fmt, "https://bugs.freedesktop.org/enter_bug.cgi?product=uchardet");
+    printf("\n\n");
 }
 
 void show_usage()
 {
+    const UchardetStrings* s = i18n_get_strings();
     show_version();
-    printf("Usage:\n");
-    printf(" uchardet [Options] [File]...\n");
+    printf("%s\n", s->usage);
+    printf("%s\n", s->usage_cmd);
     printf("\n");
-    printf("Options:\n");
-    printf(" -v, --version         Print version and build information.\n");
-    printf(" -h, --help            Print this help.\n");
+    printf("%s\n", s->options);
+    printf("%s\n", s->opt_version);
+    printf("%s\n", s->opt_help);
     printf("\n");
 }
 
 int main(int argc, char ** argv)
 {
+    const UchardetStrings* s = i18n_get_strings();
+
     static struct option longopts[] =
     {
         { "version", no_argument, NULL, 'v' },
@@ -118,7 +125,8 @@ int main(int argc, char ** argv)
             show_usage();
             return 0;
         case '?':
-            printf("Please use %s --help.\n", argv[0]);
+            printf(s->use_help_fmt, argv[0]);
+            printf("\n");
             return 1;
         }
     }
