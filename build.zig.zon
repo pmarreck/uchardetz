@@ -1,0 +1,16 @@
+.{
+    .fingerprint = 0xfb6115f1c3328092,
+    .name = .uchardetz,
+    .version = "0.0.6",
+    .minimum_zig_version = "0.15.0",
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "README.md",
+        "COPYING",
+    },
+
+    .dependencies = .{},
+}
