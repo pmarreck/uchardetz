@@ -10,7 +10,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        zig = pkgs.zig_0_15;
+        zig = pkgs.zig_0_16;
 
         # Build for a specific Zig target triple.
         # When target is null, build natively (no -Dtarget flag).
